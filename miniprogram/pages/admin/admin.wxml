@@ -1,0 +1,161 @@
+<!--miniprogram/pages/admin/admin.wxml-->
+<view class="logo"></view>
+<van-notice-bar
+  wrapable
+  scrollable="false"
+  left-icon="fail"
+  text="【重要】搜索功能如出现多个订单请仔细核对"
+/>
+<van-notice-bar
+  mode="closeable"
+  wrapable
+  scrollable="false"
+  left-icon="fail"
+  text="快递单号可以直接点击查看物流"
+/>
+<van-notice-bar
+  mode="closeable"
+  wrapable
+  scrollable="false"
+  left-icon="fail"
+  text="意外退出点击【关于我们】回到此界面"
+/>
+<van-grid clickable column-num="3">
+  <van-grid-item
+    icon="search"
+    text="订单号搜索订单"
+    bindtap='orderidSerchOpen'
+  />
+  <van-grid-item
+    icon="search"
+    text="扫描订单二维码"
+    bindtap='orderCodeSearch'
+  />
+  <van-grid-item
+    icon="search"
+    text="快递号搜索订单"
+    bindtap='trackidSerchOpen'
+  />
+  <van-grid-item
+    icon="search"
+    text="已发货未报价订单\n（下单最早优先）"
+    bindtap="shipedSearch"
+  />
+  <van-grid-item
+    icon="search"
+    text="已付款未服务订单\n（下单最早优先）"
+    bindtap="paidSearch"
+  />
+  <van-grid-item
+    icon="search"
+    text="等待发货订单\n（下单最早优先）"
+    bindtap="readySearch"
+  />
+</van-grid>
+
+<van-panel use-footer-slot  wx:for="{{orderlist}}" wx:for-item="i" wx:key="key">
+  <view slot="header">
+    <van-tag mark size="large" type="warning">订单号：\t{{i.orderid}}</van-tag>
+  </view>
+  <view>
+    <van-card currency="￥" lazy-load="true" thumb-mode="aspectFill" 
+      tag="{{storename[i.istore].name}}"
+      price="{{i.price ? i.price : '等待报价'}}"
+      desc="{{i.iintro}}"
+      title="顾客选择了共\t{{i.iservice.length}}\t个项目:\t【{{i.iservice}}】" 
+      thumb="{{ i.imgID }}"
+      title-class="itemtitle">
+      <view slot="tags">
+        <van-tag round type="primary" custom-class="tag" size="medium" data-src="{{i.sendtrack}}" bindtap='track100' >客户快递：\t{{i.sendtrack[0]}}\t{{i.sendtrack[1]}}</van-tag>
+        <van-tag round type="primary" custom-class="tag" size="medium" data-src="{{i.gettrack}}" bindtap='track100' >发货快递：\t{{i.gettrack[0]}}\t{{i.gettrack[1]}}</van-tag>
+        <van-tag round type="primary" custom-class="tag" wx:if="{{i.coupon}}">优惠券码：\t{{i.coupon}}</van-tag>
+      </view>
+    </van-card>
+  </view>
+  <view slot="footer">
+    <van-steps steps="{{ steps }}" active="{{ i.statusv }}" />
+    <van-row gutter="10">
+      <van-col span="8"><van-button color="#E02700"  bindtap="previewImage"  data-imgid='{{i.imgID}}'>查看大图</van-button></van-col>
+
+      <van-col span="8" wx:if="{{i.statusv==0}}"><van-button color="#D89E00"  disabled>尚未发货</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==1}}"><van-button color="#D89E00"  data-src="{{i._id}}" bind:click='onPriceShow' >点击报价</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==2}}"><van-button color="#D89E00"  disabled>等待付款</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==3}}"><van-button color="#D89E00"  data-src="{{i._id}}" data-orderid="{{i.orderid}}" bind:click='startWork'>开始服务</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==4}}"><van-button color="#D89E00"  data-src="{{i._id}}" bind:click='onDeliverShow' >快递发货</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==5}}"><van-button color="#D89E00" disabled>发货完成</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv==6}}"><van-button color="#D89E00"  disabled>订单完成</van-button></van-col>
+
+      <van-col span="8" wx:if="{{i.statusv<3}}"><van-button color="#00A2D1"  data-src="{{i._id}}" data-orderid="{{i.orderid}}" bind:click="payAtStore">店内付款</van-button></van-col>
+      <van-col span="8" wx:if="{{i.statusv>=3}}"><van-button color="#00A2D1" disabled>支付完成</van-button></van-col>
+    </van-row>
+  </view>
+
+  <!-- 快递弹窗 -->
+    <van-action-sheet show="{{ delivershow }}" title="请输入快递信息" bind:close="onDeliverClose">
+      <van-cell title="客户收货地址(点击复制）：" label="{{i.address[0]}}\n{{i.address[1]}}\n{{i.address[2]}}" data-text="{{i.address}}" bindtap='copyText' clickable/>
+      <van-cell title="选择快递公司或到店自取" value="{{deliverprovv}}" clickable bindtap="chooseDevilerPov" is-link></van-cell>
+      <van-cell-group>
+        <van-field
+          value="{{ delivernumber }}"
+          placeholder="请输入快递单号（到店自取请注明）"
+          right-icon="qr"
+          border="{{ true }}"
+          bind:change="onDeliverNumberChange"
+          bind:click-icon="scanDeliverBar"
+        />
+      </van-cell-group>
+      <van-button color="#0FC600" block data-src="{{orderdeliverid}}" data-id="{{i.orderid}}" data-openid="{{i._openid}}" data-price="{{i.price}}" bindtap='updateDeliver'>（请核对快递单号）确认</van-button>
+    </van-action-sheet>
+
+  <!-- 报价弹窗 -->
+    <van-action-sheet show="{{ priceshow }}" title="报价完成不能修改" bind:close="onPriceClose">
+      <van-cell-group>
+        <van-field
+          value="{{ newprice }}"
+          placeholder="最终报价"
+          border="{{ true }}"
+          bind:change="onNewPriceChange"
+          type= 'digit'
+          clearable
+        />
+      </van-cell-group>
+      <van-button color="#0FC600" block data-src="{{newprice}}" data-id="{{i._id}}" data-orderid="{{i.orderid}}" data-openid="{{i._openid}}" bind:click='setPrice'>（确认后不可修改）确认</van-button>
+    </van-action-sheet>
+
+</van-panel>
+
+<!-- 快递公司选择弹窗 -->
+<van-action-sheet show="{{ deliverpovshow }}" title="请选择快递公司" actions="{{ deliverprov }}"   bind:close="onDeliverSelectClose" bind:select="onDeliverSelect"/>
+
+<!-- 订单号搜索弹窗 -->
+<van-action-sheet show="{{ orderidSerchshow }}" title="请输入订单号" bind:close="orderidSerchClose">
+  <van-cell-group>
+    <van-field
+      value="{{ orderidS }}"
+      placeholder="为13位字符，仅前三位可能为字母且【区分大小写】"
+      border="{{ true }}"
+      bind:change="onOrderNumberSearchChange"
+      clearable
+    />
+  </van-cell-group>
+  <van-button color="#0FC600" block data-src="{{orderidS}}" bindtap='orderidSerch'>搜索</van-button>
+</van-action-sheet>
+
+<!-- 快递号搜索弹窗 -->
+<van-action-sheet show="{{ trackidSerchshow }}" title="请输入快递号" bind:close="trackidSerchClose">
+  <van-cell-group>
+    <van-field
+      value="{{ trackidS }}"
+      placeholder="仅填写快递号（扫描请核对）"
+      border="{{ true }}"
+      bind:change="onTrackNumberSearchChange"
+      bind:click-icon="scanDeliverBarS"
+      right-icon="qr"
+      clearable
+    />
+  </van-cell-group>
+  <van-button color="#0FC600" block data-src="{{trackidS}}" bindtap='trackidSerch'>搜索</van-button>
+</van-action-sheet>
+
+
+

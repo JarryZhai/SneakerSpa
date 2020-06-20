@@ -1,0 +1,67 @@
+<!--miniprogram/pages/mine/mine.wxml-->
+<view class="UCenter-bg">
+    <!-- <view class="text">我的会员卡</view> -->
+    <image src="https://s1.ax1x.com/2020/06/10/toezGj.gif" mode="scaleToFill" class="gif-wave"></image>
+</view>
+
+<van-panel use-footer-slot>
+  <view slot="header">
+    <view class="row">
+      <view class="img-user">
+        <open-data type="userAvatarUrl" ></open-data>
+      </view>
+      <view class="info-user">
+        <open-data type="userNickName"></open-data>
+        <view>{{memberlevel[ilevel]}}</view>
+        <view>会员ID:\t{{memberinfo[0].memberid}}</view>
+      </view>
+      <view class="qr-user">
+        <van-icon name="qr" size="50rpx" bindtap="showUserQR"/>
+      </view>
+    </view>
+    <!-- <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+    <view wx:else>请升级微信版本</view> -->
+  </view>
+  
+  <view>
+    <van-grid gutter="{{ 30 }}" column-num="2" square>
+      <van-grid-item use-slot bindtap="myorder">
+        <image
+          style="width: 50%; height: 70px;"
+          src="https://s1.ax1x.com/2020/06/13/tjlxSA.png"
+        />
+        <button bindtap="myorder" type='default'>我的订单</button>
+      </van-grid-item>
+      <van-grid-item use-slot>
+      
+        <image
+          style="width: 50%; height: 70px;"
+          src="https://s1.ax1x.com/2020/06/13/tjmEKU.png"
+        />
+        <button open-type="contact" bindcontact="handleContact" type='default'>联系客服</button>
+      </van-grid-item>
+    </van-grid>
+  </view>
+  <view slot="footer">
+  
+  展示素材
+    <!-- <van-button block color="linear-gradient(to right, #FFC300, #CC5D00)">立即下单<van-tag mark type="warning">优惠1</van-tag></van-button> -->
+  </view>
+</van-panel>
+
+<!-- 会员二维码弹窗 -->
+<van-popup round show="{{ showqr }}" bind:close="onQRClose">
+  <van-panel title="会员二维码" desc="非订单二维码" status="ID:\t{{memberinfo[0].memberid}}" use-footer-slot>
+    <van-image src="{{userqr}}"   width="470rpx" height="470rpx" fit="contain"></van-image>
+    <view slot="footer">
+      <view class="row">
+        <view class="img-userqr">
+          <open-data type="userAvatarUrl" ></open-data>
+        </view>
+        <!-- <view class="info-userqr">
+          <open-data type="userNickName"></open-data>
+        </view> -->
+      </view>
+    </view>
+  </van-panel>
+</van-popup>

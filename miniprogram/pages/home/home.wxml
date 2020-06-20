@@ -1,0 +1,61 @@
+<!--miniprogram/pages/home/home.wxml-->
+<view class="logo"></view>
+
+<view class='pageTwo'>
+  <swiper class='swiperClass' autoplay indicator-color="#a39f99" indicator-active-color="#f49641" indicator-dots  interval="2000" duration="1000" previous-margin="100rpx" next-margin="100rpx" circular bindchange="bindchange" style='height: {{swiperHeight}}px'>
+  <block wx:for="{{imgUrls}}" wx:key="index">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image {{swiperIdx == index ? 'active' : 'quiet'}}" mode='aspectFill'></image>
+    </swiper-item>
+  </block>
+ </swiper>
+</view>
+
+<van-grid gutter="{{ 12 }}" clickable="true" column-num="4" square>
+  <van-grid-item icon="https://s1.ax1x.com/2020/06/13/tjen9P.png" text="清洗服务" />
+  <van-grid-item icon="https://s1.ax1x.com/2020/06/13/tjeq8P.png" text="修复服务" />
+  <van-grid-item icon="https://s1.ax1x.com/2020/06/13/tjeOv8.png" text="服务价格" />
+  <van-grid-item icon="https://s1.ax1x.com/2020/06/13/tjeLgf.png" text="关于我们" bindtap="searchMine"/>
+</van-grid>
+<van-panel use-footer-slot>
+  <!-- <view slot="header">
+    <van-image  width="750rpx" height="67rpx" src="https://i2.tiimg.com/720887/bf63ce15fa732a37.jpg" fit="contain"/>
+  </view> -->
+  <view>
+    <van-image  width="750rpx" height="515rpx" src="https://s1.ax1x.com/2020/06/10/tok4eg.jpg" fit="cover"/>
+  </view>
+  <view slot="footer">
+    <van-button block color="linear-gradient(to right, #FFC300, #CC5D00)" bindtap="makeorder">立即下单<van-tag mark type="warning">优惠1</van-tag></van-button>
+  </view>
+</van-panel>
+
+<van-panel use-footer-slot>
+  <view slot="header">
+    <van-tag mark size="large" type="warning">效果展示</van-tag>
+  </view>
+  <view>
+    <van-image  width="750rpx" height="750rpx" src="https://s1.ax1x.com/2020/06/10/tok2SP.jpg" fit="contain"/>
+  </view>
+  <view slot="footer">
+    <van-button block color="linear-gradient(to right, #FFC300, #CC5D00)" bindtap="makeorder">立即下单<van-tag mark type="warning">优惠1</van-tag></van-button>
+  </view>
+</van-panel>
+
+<van-panel use-footer-slot>
+  <view slot="header">
+    <van-tag mark size="large" type="warning">探店视频</van-tag>
+  </view>
+  <view>
+    <txv-video vid="i0857921aaj" playerid="txv1"></txv-video>
+  </view>
+  <!-- <view slot="footer">
+    <van-button block color="linear-gradient(to right, #FFC300, #CC5D00)" bindtap="makeorder">立即下单<van-tag mark type="warning">优惠1</van-tag></van-button>
+  </view> -->
+</van-panel>
+
+<van-image  width="750rpx" height="67rpx" src="https://s1.ax1x.com/2020/06/10/tokfOS.jpg" fit="contain"/>
+
+<view class='placeholder-buttom'></view>
+
+
+

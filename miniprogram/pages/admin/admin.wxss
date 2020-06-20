@@ -1,0 +1,16 @@
+/* miniprogram/pages/admin/admin.wxss */
+.logo {
+  background-image: url("https://s1.ax1x.com/2020/06/10/tokrod.jpg");
+  background-size: cover;
+  height: 115rpx;
+  display: flex;
+  justify-content: center;
+  padding-top: 50rpx;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-weight: 300;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,51 @@
+/* miniprogram/pages/makeorder/makeorder.wxss */
+.logo {
+  background-image: url("https://s1.ax1x.com/2020/06/10/tok6JI.jpg");
+  background-size: cover;
+  height: 115rpx;
+  display: flex;
+  justify-content: center;
+  padding-top: 50rpx;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-weight: 300;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.services{
+  display : flex ; 
+  flex-flow : row;
+}
+
+.btn{
+  width: 150rpx;
+  height: 70rpx;
+  font-size: 24rpx;
+  padding: 0;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+  border-radius: 4px;
+  margin: 15rpx 10rpx;
+  text-align: center;
+}
+.btn-selected{
+  border: 3px solid #FF8824;
+}
+
+.btntag{
+  position: relative;
+  bottom: 108rpx;
+  left: 2rpx;
+}
+
+.placeholder-buttom {
+  width: 100%;
+  height: 220rpx;
+}
+
+.submit-tag {
+  margin-right: 30px;
+}

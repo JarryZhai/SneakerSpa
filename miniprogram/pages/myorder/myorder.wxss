@@ -1,0 +1,41 @@
+/* miniprogram/pages/myorder/myorder.wxss */
+.logo {
+  background-image: url("https://s1.ax1x.com/2020/06/10/tok6JI.jpg");
+  background-size: cover;
+  height: 115rpx;
+  display: flex;
+  justify-content: center;
+  padding-top: 50rpx;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-weight: 300;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.img-user{
+  width: 130rpx;
+  height: 130rpx;
+  display: block;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-left: 135rpx;
+  margin-right: 135rpx;
+  margin-top: 20rpx;
+}
+
+.info-user{
+  width: 200rpx;
+  height: 130rpx;
+  margin-top: 20rpx;
+  /* background-image: url("https://github.com/JarryZhai/sneakerimg/blob/master/idbg.jpg?raw=true"); */
+  background-size: cover;
+}
+
+.row{
+  display : flex ; 
+  flex-flow : row;
+  margin-bottom: 20rpx;
+}
