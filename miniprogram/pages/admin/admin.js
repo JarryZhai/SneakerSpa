@@ -352,7 +352,26 @@ Page({
   },
 
   onDeliverShow(e) {
-    this.setData({ delivershow: true, orderdeliverid: e.currentTarget.dataset.src});
+    var id = e.currentTarget.dataset.src
+    db.where({ _id: id}).orderBy('createTime','desc').get({
+      success: res=>{
+        console.log(res)
+        if(res.data[0]==null){
+          wx.showToast({
+            icon: 'none',
+            title: '失败'
+          })
+        }
+        this.setData({
+          orderlist: res.data,
+          delivershow: true, 
+          orderdeliverid: e.currentTarget.dataset.src
+        })
+      },
+      fail: err => {
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
   },
 
   onDeliverClose() {
@@ -454,9 +473,28 @@ Page({
   },
 
   //报价
-  onPriceShow() {
-    this.setData({ priceshow: true });
+  onPriceShow(e) {
+    var id = e.currentTarget.dataset.src
+    db.where({ _id: id}).orderBy('createTime','desc').get({
+      success: res=>{
+        console.log(res)
+        if(res.data[0]==null){
+          wx.showToast({
+            icon: 'none',
+            title: '失败'
+          })
+        }
+        this.setData({
+          orderlist: res.data,
+          priceshow: true
+        })
+      },
+      fail: err => {
+        console.error('[数据库] [查询记录] 失败：', err)
+      }
+    })
   },
+
   onPriceClose() {
     this.setData({ priceshow: false });
   },
